@@ -11,4 +11,16 @@ stdio.h
 -
 stdlib.h
 -
+locale.h
+-
+string.h
+-
+stdbool.h
+-
+dirent.h
+-
+unistd.h
+-
+sys/stat.h
+-
 
