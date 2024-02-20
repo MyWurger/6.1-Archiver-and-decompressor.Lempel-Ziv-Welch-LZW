@@ -299,7 +299,7 @@ void scanDirectory(const char *dir, char work_directory[100], FILE **gen_arch, F
             printf(" %s\n", way);
             int size = Get_Size(entry->d_name, data_arch);
             printf(" Размер файла: %i байтов\n", size);
-            printf(" Тип: ФАЙЛ\n");
+            printf(" Тип: ФАЙЛ\n\n");
             fprintf(*gen_arch, "%s, %i, %s\n", entry->d_name, size, way);
         }
     }
@@ -501,7 +501,7 @@ void archiver()
     // удаление директории и файлов в ней
     remove_directory(strcat(directory_copy, "/sources"));
 
-    printf("\n\n\t\t\t\t    \033[35m Архивация завершена успешно!\033[0m\n\n\n");
+    printf("\n\t\t\t\t    \033[35m Архивация завершена успешно!\033[0m\n");
     return ; 
 }
 
@@ -555,7 +555,9 @@ int main()
  
                 case 'b':
                 case 'B':
-                // unarchiver();
+                    unarchiver();
+                    clearInputBuffer();
+                    system ("clear");
                 break;
 
                 case 'c':
@@ -567,7 +569,6 @@ int main()
                     printf("\n\033[35m ОШИБКА выбора действия. Повторите ввод. Код ошибки -3.\033[0m");
                     fflush(NULL); // Выталкивание содержимого буфера вывода на экран
                     clearInputBuffer();
-                    getchar();
                     system ("clear");
                 break;
             }
@@ -576,10 +577,8 @@ int main()
         else
         {
             clearInputBuffer();
-            printf("\n\033[35m ОШИБКА выбора действия. Повторите ввод. Код ошибки -3.\033[0m");
-            fflush(NULL); // Выталкивание содержимого буфера вывода на экран
+            printf("\033[35m ОШИБКА выбора действия. Повторите ввод. Код ошибки -3.\033[0m");
             clearInputBuffer();
-            getchar();
             system ("clear");
         }
     }
