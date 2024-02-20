@@ -515,6 +515,12 @@ void clearInputBuffer()
 }
 
 
+void unarchiver();
+{
+    
+    return;
+}
+
 int main()
 {
     bool continueLoop = true;
