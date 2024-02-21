@@ -35,6 +35,10 @@ int Get_Size (const char * filenameIN, FILE ** FilenameOUT)
     fclose(inFile);
 
     fwrite(buffer, 1, num_bytes, *FilenameOUT); // записываем данные из буфера в файл
+
+    // Записываем последовательность "*****" в конец файла
+    const char *sequence = "\n*****\n";
+    fwrite(sequence, sizeof(char), strlen(sequence), *FilenameOUT);
     free(buffer);                               // освобождаем память, выделенную для буфера
     return num_bytes;
 }
@@ -80,11 +84,10 @@ int Get_Folder_Size(const char* folderPath)
 }
 
 
-void changeDirectory(char* dir)
+void changeDirectory(char* dir, const char* path)
 {
     char choice[10];
-    bool continueLoop = true;
-    while (continueLoop) 
+    while (true) 
     {
         printf(" Хотите изменить директорию? (Y/N): ");
         scanf("%9s", choice);
@@ -102,7 +105,7 @@ void changeDirectory(char* dir)
                 if ((access(dir, W_OK) == 0) && (strcmp(dir, "/") != 0) && (strcmp(dir, "/home")) != 0)
                 {
                     printf(" Директория доступна для записи.\n");
-                    continueLoop = false;
+                    break;
                 }
 
                 else 
@@ -119,8 +122,8 @@ void changeDirectory(char* dir)
 
         else 
         {
-            strcpy(dir,"/home/dmitru/Lab_Examples/Lab1");
-            continueLoop = false;
+            strcpy(dir, path);
+            break;
         }
     }
 
@@ -348,7 +351,7 @@ void archiver()
     char info_arch[4][256];
 
     // устанавливаем директорию для работы
-    changeDirectory(directory);
+    changeDirectory(directory, "/home/dmitru/Lab_Examples/Lab1");
     strcpy(directory_copy, directory);
 
     
@@ -487,10 +490,10 @@ void archiver()
     }
 
     // Переносим содержимое файлов
-    transfer_content(gen_arch, rest_arch);
-    fprintf(rest_arch, "\n-----\n");  // Разделитель между записями
     transfer_content(way_arch, rest_arch);
-    fprintf(rest_arch, "\n-----\n");
+    fprintf(rest_arch, "-----\n");
+    transfer_content(gen_arch, rest_arch);
+    fprintf(rest_arch, "-----\n");  // Разделитель между записями
     transfer_content(data_arch, rest_arch);
 
     fclose(gen_arch);
@@ -514,11 +517,101 @@ void clearInputBuffer()
     return;
 }
 
+bool check_file_access(const char* file_path) 
 
-void unarchiver();
 {
+    FILE* file = fopen(file_path, "r");
+    if (file == NULL) 
+    {
+        return false;
+    }
+    fclose(file);
+    return true;
+}
+
+bool check_file_extension(const char* file_name) 
+{
+    const char* extension = ".linrar";
+    size_t extension_length = strlen(extension);
+    size_t file_name_length = strlen(file_name);
+    if (file_name_length < extension_length) 
+    {
+        return false;
+    }
+
+    const char* file_extension = file_name + (file_name_length - extension_length);
+
+    if (strcmp(file_extension, extension) == 0) 
+    {
+        return true;
+    }
+    return false;
+}
+
+
+void unarchiver()
+{
+    char file_path[256];
+    printf(" Введите путь до файла-архива: ");
+    scanf(" %s", file_path);
+
+    while(true)
+    {
+        // проверка доступа к файлу
+        if (check_file_access(file_path)) 
+        {
+            printf(" Доступ к файлу возможен\n");
+            // проверка, что файл - архив .linrar
+            if (check_file_extension(file_path)) 
+            {
+                printf(" Доступ к файлу возможен, и расширение в названии файла является '.linrar'\n");
+                printf(" Файл может быть доступен для разархивации\n");
+                break;
+            } 
+
+            else 
+            {
+                char choice[10];
+                printf(" Доступ к файлу возможен, но расширение в названии файла не является '.librar'\n\n");
+                printf(" Хотите попробовать указать путь ещё раз? (Y/N): ");
+                scanf("%9s", choice);
+                printf("\n");
+
+                if((strcmp(choice, "Y") == 0) || (strcmp(choice, "y") == 0))
+                {
+                    printf(" **********\n");
+                    printf(" Введите путь до файла-архива: ");
+                    scanf(" %s", file_path);
+                    continue;
+                }
+                else
+                {
+                    printf("Ошибка! Введённый Вами файл невозможно разорхивировать;\n");
+                    return;
+                }
+            }
+        }
+        else 
+        {
+            printf(" Доступ к файлу невозможен\n");
+        }
+    }
+
+        
+    FILE *rest_arch = fopen(file_path, "rb");
+    if (rest_arch == NULL) 
+     {
+        printf(" ОШИБКА открытия архива \"%s\" для разархивации. Код ошибки -9\n", rest_arch);
+        exit (0);
+    }
+
+    char directory[256];
+    // устанавливаем директорию для работы
+    changeDirectory(directory, "/home/dmitru/Lab_Examples/Lab1_repack");
+    create_directory(directory);
     
     return;
+
 }
 
 int main()
@@ -563,6 +656,7 @@ int main()
                 case 'B':
                     unarchiver();
                     clearInputBuffer();
+                    getchar();
                     system ("clear");
                 break;
 
