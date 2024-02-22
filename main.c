@@ -219,7 +219,7 @@ void remove_directory(const char* path)
 }
 
 
-void print_dir(char *dir, int depth)
+void print_dir(char *dir, int depth, int *count_files)
 {
     DIR *dp;
     struct dirent *entry;
@@ -245,17 +245,59 @@ void print_dir(char *dir, int depth)
 
             printf(" %*s%s/\n", depth, "", entry->d_name);
             // Рекурсивынй вызов с новым доступом
-            print_dir(entry->d_name, depth+4);
+            print_dir(entry->d_name, depth+4, count_files);
         }
 
         else
         {
+            *count_files = *count_files + 1;
             printf("%*s%s\n", depth, " ", entry->d_name);
         }
     }
     chdir("..");
     closedir(dp);
 }
+
+
+
+
+void write_dir(const char *dir, int *count_files, char (*file_paths)[256]) {
+    DIR *dp;
+    struct dirent *entry;
+    struct stat statbuf;
+
+    if ((dp = opendir(dir)) == NULL) {
+        printf("\n\033[35m ОШИБКА открытия существующей директории %s. Код ошибки -10.\033[0m\n\n", dir);
+        return;
+    }
+
+    chdir(dir);
+
+    while ((entry = readdir(dp)) != NULL) {
+        lstat(entry->d_name, &statbuf);
+
+        if (S_ISDIR(statbuf.st_mode)) {
+            if (strcmp(".", entry->d_name) == 0 || strcmp("..", entry->d_name) == 0) {
+                continue;
+            }
+
+            // Соединяем путь к директории с именем вложенной директории
+            char next_dir[256];
+            sprintf(next_dir, "%s/%s", dir, entry->d_name);
+
+            // Рекурсивный вызов для вложенной директории
+            write_dir(next_dir, count_files, file_paths);
+        } else {
+            // Соединяем путь к родительской директории с именем файла
+            sprintf(file_paths[*count_files], "%s/%s", dir, entry->d_name);
+            (*count_files)++;
+        }
+    }
+
+    chdir("..");
+    closedir(dp);
+}
+
 
 
 void scanDirectory(const char *dir, char work_directory[100], FILE **gen_arch, FILE **data_arch, FILE **way_arch)
@@ -337,6 +379,7 @@ void archiver()
     char copy[100];
     int last_index = -1;
     int last_nonzero_index = -1;
+    int count_files = 0;
 
     memset(directory, 0, sizeof(directory)); // очистка массива
     memset(directory_copy, 0, sizeof(directory_copy)); // очистка массива
@@ -451,7 +494,7 @@ void archiver()
     }
 
     printf("\n Файлы в рабочей директории: \n");
-    print_dir(directory_copy, 0);
+    print_dir(directory_copy, 0, &count_files);
     printf("\n\n");
     printf(" Каталоги и файлы архива: \n");
     scanDirectory(directory_copy, work_directory, &gen_arch, &data_arch, &way_arch);
@@ -552,6 +595,8 @@ bool check_file_extension(const char* file_name)
 void unarchiver()
 {
     char file_path[256];
+    memset(file_path, 0, sizeof(file_path)); // очистка массива
+
     printf(" Введите путь до файла-архива: ");
     scanf(" %s", file_path);
 
@@ -606,12 +651,126 @@ void unarchiver()
     }
 
     char directory[256];
+    memset(directory, 0, sizeof(directory)); // очистка массива
     // устанавливаем директорию для работы
     changeDirectory(directory, "/home/dmitru/Lab_Examples/Lab1_repack");
     create_directory(directory);
-    
-    return;
 
+    // создание папок в директории разархивации
+    char line[256];
+    memset(line, 0, sizeof(line)); // очистка массива
+   
+   
+    int counter = 0;
+    int count_files = 0;
+    // работа с папками и файлами
+    while (fgets(line, sizeof(line), rest_arch)) 
+    {
+        if (strcmp(line, "-----\n") == 0) 
+        {
+            counter = counter +1;
+            if(counter == 2)
+            {
+                break;
+            }
+            continue;
+        }
+
+
+        size_t newLinePos = strcspn(line, "\n"); // Находим позицию символа новой строки
+        if (line[newLinePos] == '\n') {
+            line[newLinePos] = '\0'; // Заменяем символ новой строки на символ окончания строки
+        }
+
+        char* firstChar = strchr(line, ','); // Находим первое вхождение пробела в строке
+        char directoryName[256];
+        if (firstChar) 
+        {
+            size_t length = firstChar - line; // Вычисляем длину первого слова
+            memset(directoryName, 0, sizeof(directoryName)); // очистка массива
+            strncpy(directoryName, line, length); // Копируем первое слово в новую переменную
+        }
+
+        char directoryPath[256];
+        memset(directoryPath, 0, sizeof(directoryPath)); // очистка массива
+        strcpy(directoryPath, directory);
+        strcat(directoryPath, "/");
+
+        char* slashPos = strchr(line, '/');
+        char address[256];
+        memset(address, 0, sizeof(address)); // очистка массива
+        if (slashPos) 
+        {
+            strcpy(address, slashPos + 1);
+        } 
+        else 
+        {
+            strcpy(address, line);
+        }
+
+        // собираем
+        strcat(directoryPath, address);
+        if(counter == 0)
+        {
+            if (mkdir(directoryPath, 0777) != 0) 
+            {
+                fprintf(stderr, "Ошибка создания папки: %s\n", directoryPath);
+            }
+        }
+
+        else if(counter == 1)
+        {
+            
+            if(fopen(directoryPath, "w") == 0)
+            {
+                printf(" ОШИБКА создания файла \"%s\" для разархивации. Код ошибки -9\n", directoryName);
+            }
+        }
+
+    }
+
+    // запись информации в файлы
+
+    print_dir(directory, 0, &count_files);
+    printf("\nКоличество заполняемых файлов в директории: %i\n\n", count_files);
+    char file_paths[count_files][256];
+    
+    count_files = 0;
+    write_dir(directory, &count_files, file_paths);
+
+    for (int i = 0; i < count_files; i++) 
+    {
+        printf("%s\n", file_paths[i]);
+    }
+
+    int i = 0;
+
+    FILE *write_file;
+
+    // запись данных в файлы
+    while (fgets(line, sizeof(line), rest_arch) != NULL) 
+    {
+        if(write_file==NULL)
+        {
+            write_file = fopen(file_paths[i], "wb");
+            if (write_file == NULL) 
+            {
+                printf(" ОШИБКА открытия архива \"%s\" для разархивации. Код ошибки -9\n", write_file);
+                exit (0);
+            }
+        }
+        
+        if (strcmp(line, "*****\n") == 0) 
+        {
+            i=i+1;
+            fclose(write_file);
+            write_file=NULL;
+            continue;
+        }
+
+        fputs(line, write_file);
+    }
+    return;
 }
 
 int main()
