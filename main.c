@@ -5,7 +5,7 @@
 #include <dirent.h>                  // содержит объявления функций и структур данных, необходимых для работы с файловой системой и директориями
 #include <unistd.h>                  // содержит символические константы и структуры, которые еще не были описаны в каких-либо других включаемых файлах
 #include <sys/stat.h>                // вносит в структуру, на которую указывает statbuf, информацию, содержащуюся в файле, связанном с указателем filename
-
+#include <time.h>                    // для работы со временем
 
 /***************************************************/
 /*             РЕАЛИЗАЦИЯ ФУНКЦИЙ                  */
@@ -49,6 +49,28 @@ int Get_Size (const char * filenameIN,             // путь до файла, 
 
     fclose(inFile);                                // файл чтения отработан - закрываем его
     fwrite(buffer, 1, num_bytes, FilenameOUT);     // записываем данные из буфера в файл вывода. Аргументы, аналогичные fread
+
+    // дополнительно записываем дату и время работы, если filenameIN - текстовый файл
+    char *txt_ext = ".txt";                        // объявление переменной txt_ext типа "указатель на символ"
+    int filenameIN_len = strlen(filenameIN);       // размер пути до файла считывания
+    int txt_ext_len = strlen(txt_ext);             // значение, равное длине строки txt_ext, которая представляет расширение файла .txt.
+   
+    // длина имени файла (filenameIN_len) больше или равна длине расширения .txt (txt_ext_len).
+    // Если это условие не выполняется, значит длина имени файла слишком короткая, чтобы содержать
+    // расширение .txt, и дальнейшая проверка не имеет смысла
+
+    // сравнивает часть имени файла, начиная с позиции filenameIN_len - txt_ext_len и имеющей длину txt_ext_len, с расширением .txt (txt_ext)
+    if (filenameIN_len >= txt_ext_len && strcmp(filenameIN + filenameIN_len - txt_ext_len, txt_ext) == 0) 
+    {
+        time_t now = time(NULL);
+        struct tm *local_time = localtime(&now);   // получение локального времени
+
+        // запись полей структуры локального времени в выходной файл
+        fprintf(FilenameOUT, "Дата и время архивации: %02d/%02d/%04d %02d:%02d:%02d",
+        local_time->tm_mday, local_time->tm_mon + 1, local_time->tm_year + 1900,
+        local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
+
+    }// if (filenameIN_len >= txt_ext_len && strcmp(filenameIN + filenameIN_len - txt_ext_len, txt_ext) == 0) 
 
     // последовательность "*****" в конец записи информации из очередного файла
     const char *sequence = "\n*****\n";
@@ -494,7 +516,7 @@ void transfer_content(FILE *src,                   // указатель на ф
 void getpassword(char *password)                   // строка хранения пароля    
 {
     printf("\033[38;5;150m Хотите изменить пароль на архив? (Y/N): \033[0m");
-    char choice[4];                                // выбор пользователя
+    char choice[100];                                // выбор пользователя
     memset(choice, 0, sizeof(choice));             // очистка массива выбора пользователя
     scanf(" %s", choice);
    
@@ -998,6 +1020,8 @@ void unarchiver()
         if((strncmp(password_user, buffer, buffer_length) == 0) && (strlen(password_user) == buffer_length))
         {
             printf("\033[38;5;205m Разархивация разрешена. Пароли совпали.\033[0m\n");
+            // читаем строку символов-разделителей
+            fgets(buffer, sizeof(buffer), rest_arch);
             break;                            // пароль успешно введён. Заканчиваем цикл
         }
 
@@ -1019,8 +1043,6 @@ void unarchiver()
 
     }// while()  
 
-    // читаем строку символов-разделителей
-    fgets(buffer, sizeof(buffer), rest_arch);
     char directory[256];               // ввод директории, куда будем разархивировать
     // очистка массива
     memset(directory, 0, sizeof(directory));
@@ -1194,6 +1216,25 @@ void unarchiver()
         // нашли символ-разделитель между информацией для записи в разные файлы
         if (strcmp(line, "*****\n") == 0) 
         {
+            // запись локального времени только в текстовые выходные файлы
+            char *txt_ext = ".txt";                          // объявление переменной txt_ext типа "указатель на символ"
+            int filenameIN_len = strlen(file_paths[i]);      // размер пути до файла считывания
+            int txt_ext_len = strlen(txt_ext);               // значение, равное длине строки txt_ext, которая представляет расширение файла .txt.
+   
+            // длина имени файла (filenameIN_len) больше или равна длине расширения .txt (txt_ext_len).
+            // Если это условие не выполняется, значит длина имени файла слишком короткая, чтобы содержать
+            // расширение .txt, и дальнейшая проверка не имеет смысла
+
+            // сравнивает часть имени файла, начиная с позиции filenameIN_len - txt_ext_len и имеющей длину txt_ext_len, с расширением .txt (txt_ext)
+            if (filenameIN_len >= txt_ext_len && strcmp(file_paths[i] + filenameIN_len - txt_ext_len, txt_ext) == 0) 
+            {
+                time_t now = time(NULL);                     // переменная времени
+                struct tm *local_time = localtime(&now);     // получение локального времени
+                fprintf(write_file, "Дата и время разархивации: %02d/%02d/%04d %02d:%02d:%02d\n",
+                local_time->tm_mday, local_time->tm_mon + 1, local_time->tm_year + 1900,
+                local_time->tm_hour, local_time->tm_min, local_time->tm_sec);
+            }// if(filenameIN_len >= txt_ext_len && strcmp(file_paths[i] + filenameIN_len - txt_ext_len, txt_ext) == 0) 
+            
             i=i+1;                                           // нашли разделитель - перешли к следующему файлу для записи
             fclose(write_file);                              // закрыли текущий файл
             write_file=NULL;                                 // убираем указатель на NULL
