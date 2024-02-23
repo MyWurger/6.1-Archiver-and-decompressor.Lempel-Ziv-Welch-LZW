@@ -456,6 +456,19 @@ ExperimentalMemCheck/fast:
 .PHONY : ExperimentalMemCheck/fast
 
 #=============================================================================
+# Target rules for targets named cppcheck
+
+# Build rule for target.
+cppcheck: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 cppcheck
+.PHONY : cppcheck
+
+# fast build rule for target.
+cppcheck/fast:
+	$(MAKE) -f CMakeFiles/cppcheck.dir/build.make CMakeFiles/cppcheck.dir/build
+.PHONY : cppcheck/fast
+
+#=============================================================================
 # Target rules for targets named Experimental
 
 # Build rule for target.
@@ -582,6 +595,7 @@ help:
 	@echo "... NightlyConfigure"
 	@echo "... ExperimentalTest"
 	@echo "... ExperimentalMemCheck"
+	@echo "... cppcheck"
 	@echo "... Experimental"
 	@echo "... NightlySubmit"
 	@echo "... ExperimentalSubmit"

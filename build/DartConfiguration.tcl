@@ -63,7 +63,7 @@ UpdateType: git
 
 # Compiler info
 Compiler: /usr/bin/g++
-CompilerVersion: 
+CompilerVersion: 6.3.0
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 

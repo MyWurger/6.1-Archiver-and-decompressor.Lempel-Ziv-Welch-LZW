@@ -87,6 +87,7 @@ clean: CMakeFiles/ExperimentalBuild.dir/clean
 clean: CMakeFiles/NightlyConfigure.dir/clean
 clean: CMakeFiles/ExperimentalTest.dir/clean
 clean: CMakeFiles/ExperimentalMemCheck.dir/clean
+clean: CMakeFiles/cppcheck.dir/clean
 clean: CMakeFiles/Experimental.dir/clean
 clean: CMakeFiles/NightlySubmit.dir/clean
 clean: CMakeFiles/ExperimentalSubmit.dir/clean
@@ -742,6 +743,33 @@ ExperimentalMemCheck: CMakeFiles/ExperimentalMemCheck.dir/rule
 CMakeFiles/ExperimentalMemCheck.dir/clean:
 	$(MAKE) -f CMakeFiles/ExperimentalMemCheck.dir/build.make CMakeFiles/ExperimentalMemCheck.dir/clean
 .PHONY : CMakeFiles/ExperimentalMemCheck.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/cppcheck.dir
+
+# All Build rule for target.
+CMakeFiles/cppcheck.dir/all:
+	$(MAKE) -f CMakeFiles/cppcheck.dir/build.make CMakeFiles/cppcheck.dir/depend
+	$(MAKE) -f CMakeFiles/cppcheck.dir/build.make CMakeFiles/cppcheck.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir="/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles" --progress-num= "Built target cppcheck"
+.PHONY : CMakeFiles/cppcheck.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/cppcheck.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles" 0
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/cppcheck.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles" 0
+.PHONY : CMakeFiles/cppcheck.dir/rule
+
+# Convenience name for target.
+cppcheck: CMakeFiles/cppcheck.dir/rule
+
+.PHONY : cppcheck
+
+# clean rule for target.
+CMakeFiles/cppcheck.dir/clean:
+	$(MAKE) -f CMakeFiles/cppcheck.dir/build.make CMakeFiles/cppcheck.dir/clean
+.PHONY : CMakeFiles/cppcheck.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/Experimental.dir

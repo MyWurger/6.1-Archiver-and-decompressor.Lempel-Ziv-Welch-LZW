@@ -1,1 +1,1 @@
-/usr/bin/gcc -g  -rdynamic CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o  -o ARCHIVER_AND_UNARCHIVER 
+gcc  -Wall -fsanitize=address -g  -rdynamic CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o  -o ARCHIVER_AND_UNARCHIVER 

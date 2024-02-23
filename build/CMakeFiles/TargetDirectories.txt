@@ -27,6 +27,7 @@
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/NightlyConfigure.dir
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/ExperimentalTest.dir
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/ExperimentalMemCheck.dir
+/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/cppcheck.dir
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/Experimental.dir
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/NightlySubmit.dir
 /home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles/ExperimentalSubmit.dir
