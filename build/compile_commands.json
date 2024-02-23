@@ -1,7 +1,7 @@
 [
 {
   "directory": "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build",
-  "command": "/usr/bin/gcc   -g   -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o   -c \"/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c\"",
+  "command": "gcc    -Wall -fsanitize=address -g   -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o   -c \"/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c\"",
   "file": "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c"
 }
 ]

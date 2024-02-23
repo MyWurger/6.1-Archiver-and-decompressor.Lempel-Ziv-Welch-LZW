@@ -60,15 +60,15 @@ include CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/flags.make
 CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o: CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/flags.make
 CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o: ../main.c
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir="/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/build/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o   -c "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c"
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o   -c "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c"
 
 CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.i"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c" > CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.i
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c" > CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.i
 
 CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.s"
-	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c" -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.s
+	gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S "/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c" -o CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.s
 
 # Object files for target ARCHIVER_AND_UNARCHIVER
 ARCHIVER_AND_UNARCHIVER_OBJECTS = \

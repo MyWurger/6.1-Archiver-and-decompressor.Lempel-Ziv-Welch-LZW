@@ -4,7 +4,7 @@
 	Name="astralinux"
 	Generator="ctest-3.16.3"
 	CompilerName="/usr/bin/g++"
-	CompilerVersion=""
+	CompilerVersion="6.3.0"
 	OSName="Linux"
 	Hostname="astralinux"
 	OSRelease="5.15.0-70-generic"
@@ -24,11 +24,11 @@
 	ProcessorClockFrequency="2600"
 	>
 	<Testing>
-		<StartDateTime>Feb 23 17:32 MSK</StartDateTime>
-		<StartTestTime>1708698725</StartTestTime>
+		<StartDateTime>Feb 23 18:15 MSK</StartDateTime>
+		<StartTestTime>1708701357</StartTestTime>
 		<TestList/>
-		<EndDateTime>Feb 23 17:32 MSK</EndDateTime>
-		<EndTestTime>1708698725</EndTestTime>
+		<EndDateTime>Feb 23 18:15 MSK</EndDateTime>
+		<EndTestTime>1708701357</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
