@@ -1,9 +1,0 @@
-{
-    "files.associations": {
-        "stdio.h": "c",
-        "stdlib.h": "c",
-        "stdbool.h": "c",
-        "unistd.h": "c",
-        "stat.h": "c"
-    }
-}
