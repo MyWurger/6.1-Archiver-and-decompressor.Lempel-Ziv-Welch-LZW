@@ -2,8 +2,8 @@
     "tasks": [
         {
             "type": "cppbuild",
-            "label": "C/C++: gcc сборка активного файла",
-            "command": "/usr/bin/gcc",
+            "label": "C/C++: g++ сборка активного файла",
+            "command": "/usr/bin/g++",
             "args": [
                 "-fdiagnostics-color=always",
                 "-g",

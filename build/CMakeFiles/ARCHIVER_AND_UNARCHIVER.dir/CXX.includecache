@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.c
+/home/dmitru/Проекты VisualCode/Archiver_and_Unarchiver/main.cpp
 stdio.h
 -
 stdlib.h
@@ -22,5 +22,9 @@ unistd.h
 sys/stat.h
 -
 time.h
+-
+vector
+-
+string
 -
 

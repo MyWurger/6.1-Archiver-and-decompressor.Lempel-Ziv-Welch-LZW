@@ -533,32 +533,32 @@ ContinuousUpdate/fast:
 	$(MAKE) -f CMakeFiles/ContinuousUpdate.dir/build.make CMakeFiles/ContinuousUpdate.dir/build
 .PHONY : ContinuousUpdate/fast
 
-main.o: main.c.o
+main.o: main.cpp.o
 
 .PHONY : main.o
 
 # target to build an object file
-main.c.o:
-	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.o
-.PHONY : main.c.o
+main.cpp.o:
+	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-main.i: main.c.i
+main.i: main.cpp.i
 
 .PHONY : main.i
 
 # target to preprocess a source file
-main.c.i:
-	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.i
-.PHONY : main.c.i
+main.cpp.i:
+	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-main.s: main.c.s
+main.s: main.cpp.s
 
 .PHONY : main.s
 
 # target to generate assembly for a file
-main.c.s:
-	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.c.s
-.PHONY : main.c.s
+main.cpp.s:
+	$(MAKE) -f CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/build.make CMakeFiles/ARCHIVER_AND_UNARCHIVER.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
